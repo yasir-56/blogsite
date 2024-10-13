@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+{{ post.title }}
+{% endblock %}
+
+{% block css_files %}
+<link rel="stylesheet" href="{% static 'blog/post-detail.css' %}">
+{% endblock %}
+
+{% block content %}
+
+{% if comment_form.errors %}
+<div class="alert alert-danger" role="alert">
+    <h4>Saving the comment failed!</h4>
+    <p>Please check the comment form below and fix your errors.</p>
+    <a href="#comment-form" class="btn btn-warning">Fix</a>
+</div>
+{% endif %}
+
+<!-- Post Summary Section -->
+<section id="summary" style="background-color: #7a09c5; color: white; padding: 20px; border-radius: 8px;">
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+        <div>
+            <h2 style="font-size: 3rem; font-weight: bold;">{{ post.title }}</h2>
+            <div style="margin-top: 10px;">
+                {% for tag in post_tag %}
+                <span class="tag" style="padding: 5px 10px; background-color: white; color: #7a09c5; border-radius: 5px; margin-right: 10px;">{{ tag.caption }}</span>
+                {% endfor %}
+            </div>
+            <div style="margin-top: 20px;">
+                <form action="{% url 'read-later' %}" method="POST">
+                    {% csrf_token %}
+                    <input type="hidden" value="{{ post.id }}" name="post_id">
+                    <button class="btn btn-outline-light">
+                        {% if saved_for_later %}
+                        Remove from "Read Later" List
+                        {% else %}
+                        Read Later
+                        {% endif %}
+                    </button>
+                </form>
+            </div>
+        </div>
+        <div>
+            <img src="{{ post.image.url }}" alt="{{ post.title }}" style="width: auto; height: auto; border-radius: 8px;">
+            <p class="mt-2" style="font-weight: bold;">By: {{ post.author }}</p>
+            <p class="mt-2" style="font-weight: bold;">Last Updated on: <time>{{ post.date|date:"d M Y" }}</time></p>
+        </div>
+    </div>
+</section>
+
+<!-- Post Content -->
+<main class="my-5">
+    <article>
+        {{ post.content|linebreaks }}
+    </article>
+</main>
+
+<!-- Comments Section -->
+<section id="comment-form" class="my-5" style="background-color: #f9f9f9; padding: 30px; border-radius: 10px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);">
+    <h4 class="mb-4" style="font-size: 1.5rem; font-weight: 600;">Leave a Comment</h4>
+    <form action="{% url 'post-detail-page' post.slug %}" method="POST" style="max-width: 600px; margin: 0 auto;">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label for="{{ comment_form.name.id_for_label }}" class="form-label" style="font-weight: 500;">Your Name</label>
+            <input type="text" name="{{ comment_form.name.name }}" id="{{ comment_form.name.id_for_label }}" class="form-control" style="border: 1px solid #ccc; border-radius: 8px; padding: 10px; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);">
+            <div class="text-danger">{{ comment_form.name.errors }}</div>
+        </div>
+
+        <div class="mb-3">
+            <label for="{{ comment_form.email.id_for_label }}" class="form-label" style="font-weight: 500;">Your Email</label>
+            <input type="email" name="{{ comment_form.email.name }}" id="{{ comment_form.email.id_for_label }}" class="form-control" style="border: 1px solid #ccc; border-radius: 8px; padding: 10px; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);">
+            <div class="text-danger">{{ comment_form.email.errors }}</div>
+        </div>
+
+        <div class="mb-3">
+            <label for="{{ comment_form.comment.id_for_label }}" class="form-label" style="font-weight: 500;">Enter Comment</label>
+            <textarea name="{{ comment_form.comment.name }}" id="{{ comment_form.comment.id_for_label }}" class="form-control" rows="4" style="border: 1px solid #ccc; border-radius: 8px; padding: 10px; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);"></textarea>
+            <div class="text-danger">{{ comment_form.comment.errors }}</div>
+        </div>
+
+        <div class="text-center">
+            <button type="submit" class="btn btn-primary" style="background-color: #7a09c5; border: none; padding: 10px 20px; border-radius: 50px; font-weight: 600; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);">Submit Comment</button>
+        </div>
+    </form>
+</section>
+
+
+{% endblock %}

@@ -1,0 +1,74 @@
+.post {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+
+    border: 1px solid #ddd; /* Optional: add a border */
+    border-radius: 5px; /* Optional: rounded corners */
+    padding: 15px; /* Optional: padding inside the post */
+    transition: transform 0.2s; /* Optional: smooth hover effect */
+  }
+  
+  .post a {
+    text-decoration: none;
+    color: black;
+    transition: all 0.2s ease;
+    padding: 1rem;
+  }
+  
+  .post a:hover,
+  .post a:active {
+    transform: scale(1.1);
+    background-color: #390281;
+    color: white;
+  }
+  
+  .post img {
+    width: 5rem;
+    height: 5rem;
+    object-fit: cover;
+    border-radius: 50%;
+  }
+  
+  .post h3 {
+    margin: 0.25rem 0;
+  }
+  
+  .post time {
+    color: #666666;
+    margin: 0.25rem;
+    font-style: italic;
+    font-size: 0.85rem;
+  }
+  
+  .post:hover time,
+  .post:active time {
+    color: white;
+  }
+
+
+
+.post:hover {
+    transform: scale(1.05); /* Optional: slightly enlarge on hover */
+}
+
+
+.card {
+  border: none; /* Optional: remove border */
+  transition: transform 0.2s ease-in-out; /* Optional: smooth hover effect */
+}
+
+.card:hover {
+  transform: scale(1.05); /* Optional: enlarge slightly on hover */
+}
+
+.card-img-top {
+  height: 200px; /* Optional: control image height */
+  object-fit: cover; /* Ensure the image fits well */
+}
+
+
+li {
+  list-style: none;
+}
